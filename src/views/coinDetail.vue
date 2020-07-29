@@ -109,7 +109,8 @@ export default {
 
   methods: {
     getCoin() {
-      //traer el dato id de la url
+      //traer el dato id que se encuentra en los parametos de la url 
+      //se usa el $route para ir a los datos de la ruta
       const id = this.$route.params.id;
 
       //Promise all pertime hacer un llamado a multiples promises atravez  de un array

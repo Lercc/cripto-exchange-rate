@@ -32,19 +32,26 @@
           <td>
             <b># {{ a.rank }}</b>
           </td>
-          <td>{{ a.name }}</td>
+          <td >
+            <router-link :to="{ name:'coin-detail', params: { id : a.id } }"
+              class="hover:underline text-green-600">
+                {{ a.name }}
+            </router-link>
+            <small class="ml-2 text-gray-500">
+                {{ a.symbol }}
+            </small>
+          </td>
           <td>{{ a.priceUsd | dollar }}</td>
           <td>{{ a.marketCapUsd | dollar }}</td>
           <td
-            :class="
-              a.changePercent24Hr.includes('-')
-                ? 'text-red-600'
-                : 'text-green-600'
-            "
-          >
+            :class="a.changePercent24Hr.includes('-')? 'text-red-600': 'text-green-600'">
             {{ a.changePercent24Hr | percent }}
           </td>
-          <td class="hidden sm:block"></td>
+          <td class="hidden sm:block">
+            <boton-comp @clickeo-component="goToCoin(a.id)">
+              <span>Detalle</span>
+            </boton-comp>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -52,15 +59,31 @@
 </template>
 
 <script>
+import botonComp from '@/components/botonComp'
+
 export default {
   name: "PxAssetsTable",
+
+  components: {
+    botonComp
+  },
 
   props: {
     assets: {
       type: Array,
       default: () => []
     }
+  },
+
+  methods :{
+    goToCoin (id) {
+      //$router -> permite acceder a la inspacia del router
+      //$route -> permite acceder los parametros de la ruta 
+
+      this.$router.push({ name:'coin-detail', params: { id : id}})
+    }
   }
+
 };
 </script>
 
