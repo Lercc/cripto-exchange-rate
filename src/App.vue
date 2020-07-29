@@ -1,8 +1,8 @@
 <template>
   <main>
-    <header-comp/>
+    <header-comp />
 
-    <router-view class="cointainer px-5 sm:px-20 py-20 flex justify-center"/>
+    <router-view class="cointainer px-5 sm:px-20 py-20 flex justify-center" />
   </main>
 </template>
 
@@ -12,9 +12,8 @@ import headerComp from "@/components/headerComp";
 export default {
   name: "App",
   components: {
-    headerComp,
-    
-  },
+    headerComp
+  }
 };
 </script>
 

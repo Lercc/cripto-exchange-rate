@@ -1,5 +1,5 @@
 <template>
-    <assets-table :assets="assets"/>
+  <assets-table :assets="assets" />
 </template>
 
 <script>
@@ -7,20 +7,20 @@ import api from "@/api";
 import assetsTable from "@/components/assetsTable";
 
 export default {
-    name: 'home',
+  name: "home",
 
-    components: {
-        assetsTable
-    },
+  components: {
+    assetsTable
+  },
 
-    data() {
-        return {
-            assets: []
-        }
-    },
+  data() {
+    return {
+      assets: []
+    };
+  },
 
-    created() {
-        api.getAssets().then(assets => (this.assets = assets))
-    }
-}
+  created() {
+    api.getAssets().then(assets => (this.assets = assets));
+  }
+};
 </script>

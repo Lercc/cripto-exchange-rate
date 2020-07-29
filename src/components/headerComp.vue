@@ -3,12 +3,16 @@
     <nav>
       <nav class="flex items-center justify-between flex-wrap bg-green-400 p-6">
         <div class="flex items-center flex-shrink-0 text-white mr-6">
-            <iconComp class="mr-4"/>
-            <span class="font-semibold text-xl tracking-tight">PlatziExchange</span>
+          <iconComp class="mr-4" />
+          <span class="font-semibold text-xl tracking-tight"
+            >PlatziExchange</span
+          >
         </div>
 
-        <div class="hidden sm:block w-full blok flex-grow lg:flex lg:items-center lg:wauto">
-            <div class="text-sm lg:flex-grow"></div>
+        <div
+          class="hidden sm:block w-full blok flex-grow lg:flex lg:items-center lg:wauto"
+        >
+          <div class="text-sm lg:flex-grow"></div>
         </div>
       </nav>
     </nav>
@@ -16,10 +20,10 @@
 </template>
 
 <script>
-import iconComp from "@/components/iconComp"
+import iconComp from "@/components/iconComp";
 
 export default {
-  name: 'headerComp',
+  name: "headerComp",
   components: {
     iconComp
   }
