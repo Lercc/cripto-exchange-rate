@@ -1,5 +1,9 @@
 <template>
-  <assets-table :assets="assets" />
+  <div>
+    <bounce-loader :loading="isLoading" :color="'#68d391'" :size="100"  />  
+    <assets-table v-if="!isLoading" :assets="assets" />
+  </div>
+
 </template>
 
 <script>
@@ -15,12 +19,17 @@ export default {
 
   data() {
     return {
-      assets: []
+      assets: [],
+      isLoading: false,
     };
   },
 
   created() {
-    api.getAssets().then(assets => (this.assets = assets));
+    this.isLoading = true
+
+    api.getAssets()
+    .then(assets => (this.assets = assets))
+    .finally(() => this.isLoading = false);
   }
 };
 </script>

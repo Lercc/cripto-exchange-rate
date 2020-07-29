@@ -1,5 +1,4 @@
 <template>
-  <div>
     <table>
       <thead>
         <tr class="bg-gray-100 border-b-2 border-gray-400">
@@ -55,7 +54,6 @@
         </tr>
       </tbody>
     </table>
-  </div>
 </template>
 
 <script>
