@@ -49,23 +49,27 @@
         </div>
 
         <div class="my-10 sm:mt-0 flex flex-col justify-center text-center">
-          <button
+          <button @click="changeTypeConvert" 
             class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           >
-            Cambiar
+            {{ fromUSD ? `USD a ${asset.symbol}`: `${asset.symbol} a USD` }}
           </button>
 
           <div class="flex flex-row my-5">
             <label class="w-full" for="convertValue">
               <input
+                v-model="valueToChange"
                 id="convertValue"
                 type="number"
+                :placeholder="fromUSD ? `Valor en USD` : `Valor en ${asset.symbol}` "
                 class="text-center bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
               />
             </label>
           </div>
 
-          <span class="text-xl"></span>
+          <span class="text-xl">
+            {{ exchangeValueConverter }} {{ fromUSD ? asset.symbol : 'USD' }}
+          </span>
         </div>
       </div>
 
@@ -87,11 +91,10 @@
             <boton-comp :is-loading="m.isLoading || false" v-if="!m.url" @clickeo-component="getWebSite(m)">
                 <span v-show="!m.isLoading">Obtener Link</span>
             </boton-comp>
-            <a v-else class="hover:underline text-green-600 cursor-pointer" target="_blank">{{ m.url }}</a>
+            <a v-else class="hover:underline text-green-600 cursor-pointer" target="_blank" :href="m.url">{{ m.url }}</a>
           </td>
         </tr>
       </table>
-
     </template>
   </div>
 </template>
@@ -114,10 +117,21 @@ export default {
       markets: [],
       isLoading: false,
       isWebLoading: false,
+      fromUSD: true,
+      valueToChange: '',
     };
   },
 
   computed: {
+    exchangeValueConverter() {
+      if (!this.valueToChange) {
+        return 0
+      }
+
+      return (this.fromUSD ? this.valueToChange / this.asset.priceUsd : this.valueToChange * this.asset.priceUsd).toFixed(3)
+      // return out.toFixed(3)
+    },
+
     min() {
       return Math.min(
         ...this.history.map(h => parseFloat(h.priceUsd).toFixed(2))
@@ -138,12 +152,22 @@ export default {
     }
   },
 
-  created() {
-    this.getCoin();
-
+  watch: {
+    $route () {
+      this.getCoin()
+    }
   },
 
+  created () {
+    this.getCoin();
+
+  },    
+
   methods: {
+    changeTypeConvert () {
+      this.fromUSD = !this.fromUSD
+    },
+
     getWebSite (exchange) {
       this.$set(exchange,'isLoading', true)
 
@@ -175,9 +199,8 @@ export default {
 </script>
 
 <style scoped>
-  .componen-container {
-    width: 100%;
-    outline: 1px solid red;
-    box-sizing: border-box;
+  td {
+    padding: 10px;
+    text-align: center;
   }
 </style>
