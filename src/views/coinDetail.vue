@@ -1,9 +1,10 @@
 <template>
-  <div class="flex-col">
+  <div class="flex flex-col">
     <div class="flex justify-center">
       <bounce-loader :loading="isLoading" :color="'#68d391'" :size="100" />  
     </div>
     <template v-if="!isLoading && asset.id">
+    <div>
       <div class="flex flex-col sm:flex-row justify-around items-center">
         <div class="flex flex-col items-center">
           <img
@@ -67,7 +68,14 @@
 
           <span class="text-xl"></span>
         </div>
+        
       </div>
+      <line-chart 
+      :colors="['orange']" 
+      :min="min" :max="max" 
+      :data="history.map( h => [h.date, parseFloat(h.priceUsd).toFixed(2)])"
+      class="my-5" />
+  </div>
     </template>
   </div>
 </template>
@@ -132,3 +140,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .componen-container {
+    width: 100%;
+    outline: 1px solid red;
+    box-sizing: border-box;
+  }
+</style>
