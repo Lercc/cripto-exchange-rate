@@ -4,7 +4,6 @@
       <bounce-loader :loading="isLoading" :color="'#68d391'" :size="100" />  
     </div>
     <template v-if="!isLoading && asset.id">
-    <div>
       <div class="flex flex-col sm:flex-row justify-around items-center">
         <div class="flex flex-col items-center">
           <img
@@ -68,29 +67,53 @@
 
           <span class="text-xl"></span>
         </div>
-        
       </div>
+
       <line-chart 
       :colors="['orange']" 
       :min="min" :max="max" 
       :data="history.map( h => [h.date, parseFloat(h.priceUsd).toFixed(2)])"
       class="my-5" />
-  </div>
+
+      <h3 class="text-xl my-10">Mejores ofertas de Cambio</h3>
+      <table>
+        <tr v-for="m in markets" :key="`${m.exhangeId}-${m.priceUsd}`" class="border-b">
+          <td>
+            <b>{{ m.exchangeId }}</b>
+          </td>
+          <td>{{ m.priceUsd | dollar }}</td>
+          <td>{{ m.baseSymbol }} / {{ m.quoteSymbol }}</td>
+          <td>
+            <boton-comp :is-loading="m.isLoading || false" v-if="!m.url" @clickeo-component="getWebSite(m)">
+                <span v-show="!m.isLoading">Obtener Link</span>
+            </boton-comp>
+            <a v-else class="hover:underline text-green-600 cursor-pointer" target="_blank">{{ m.url }}</a>
+          </td>
+        </tr>
+      </table>
+
     </template>
   </div>
 </template>
 
 <script>
 import api from "@/api";
+import botonComp from '@/components/botonComp'
 
 export default {
   name: "coinDetail",
+
+  components: {
+    botonComp,
+  },
 
   data() {
     return {
       asset: {},
       history: [],
+      markets: [],
       isLoading: false,
+      isWebLoading: false,
     };
   },
 
@@ -117,9 +140,18 @@ export default {
 
   created() {
     this.getCoin();
+
   },
 
   methods: {
+    getWebSite (exchange) {
+      this.$set(exchange,'isLoading', true)
+
+      return api.getExchange(exchange.exchangeId).then(res => {
+          this.$set(exchange,'url', res.exchangeUrl)
+        }).finally(() => { exchange.isLoading = false })
+    },
+
     getCoin() {
       this.isLoading = true 
 
@@ -130,10 +162,11 @@ export default {
       //Promise all pertime hacer un llamado a multiples promises atravez  de un array
       // y poder manejar las respuestas cuando estas hallan terminado
 
-      Promise.all([api.getAsset(id), api.getAssetHistory(id)]).then(
-        ([asset, history]) => {
+      Promise.all([api.getAsset(id), api.getAssetHistory(id), api.getMarkets(id)]).then(
+        ([asset, history, markets]) => {
           this.asset = asset;
           this.history = history;
+          this.markets = markets;
         }
       ).finally(() => this.isLoading = false );
     }
