@@ -16,23 +16,23 @@ export default {
     headerComp
   },
 
-  data () {
+  data() {
     return {
       links: [
         {
-          name: 'BTC',
-          url: { name: 'coin-detail', params: { id: 'bitcoin' } }
+          name: "BTC",
+          url: { name: "coin-detail", params: { id: "bitcoin" } }
         },
         {
-          name: 'ETH',
-          url: { name: 'coin-detail', params: { id: 'ethereum' } }
+          name: "ETH",
+          url: { name: "coin-detail", params: { id: "ethereum" } }
         },
         {
-          name: 'XRP',
-          url: { name: 'coin-detail', params: { id: 'ripple' } }
+          name: "XRP",
+          url: { name: "coin-detail", params: { id: "ripple" } }
         }
       ]
-    }
+    };
   }
 };
 </script>
